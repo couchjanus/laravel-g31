@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
@@ -10,8 +11,12 @@ class HomeController extends Controller
     public function index()
     {
 
-        $categories = DB::query("select * from users where email_verified_at is null");
-        dd($categories);
+        // $categories = DB::query("select * from users where email_verified_at is null");
+        // dd($categories);
+        if (Auth::check()) {
+            dd(Auth::user());
+        }
+
         return view('home.index', ['title' => "Home page"]);
     }
 

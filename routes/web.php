@@ -30,4 +30,16 @@ Route::patch('name', [HomeController::class, 'show'])->name('home.test');
 Route::get('home', [HomeController::class, 'index'])->name('home.page');
 
 use App\Http\Controllers\Admin\DashdoardController;
-Route::get('admin', DashdoardController::class);
+
+
+Route::get('admin', DashdoardController::class)->middleware('auth');
+
+Route::middleware([
+    'auth:sanctum',
+    config('jetstream.auth_session'),
+    'verified',
+])->group(function () {
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    })->name('dashboard');
+});
