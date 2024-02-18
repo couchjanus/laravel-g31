@@ -29,10 +29,14 @@ use App\Http\Controllers\HomeController;
 Route::patch('name', [HomeController::class, 'show'])->name('home.test');
 Route::get('home', [HomeController::class, 'index'])->name('home.page');
 
-use App\Http\Controllers\Admin\DashdoardController;
+use App\Http\Controllers\Admin\{DashdoardController, BrandController};
 
 
-Route::get('admin', DashdoardController::class)->middleware('auth');
+Route::get('admin', DashdoardController::class)->middleware('auth')->name('admin');
+
+
+Route::resource('admin/brands', BrandController::class);
+
 
 Route::middleware([
     'auth:sanctum',
