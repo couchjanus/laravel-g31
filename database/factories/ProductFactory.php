@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Enums\ProductStatus;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Product>
@@ -16,8 +17,18 @@ class ProductFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
-        ];
+       $brands = \DB::table('brands')->pluck('id');
+       $categories = \DB::table('categories')->pluck('id');
+
+       return [
+           'name' => $this->faker->unique()->catchPhrase(),
+           'description' => $this->faker->text(),
+           'price' => $this->faker->randomFloat($nbMaxDecimals = 2, $min = 1, $max = 9000),
+           'status' => $this->faker->randomElement(ProductStatus::values()),
+           'brand_id' => $this->faker->randomElement($brands),
+           'category_id' => $this->faker->randomElement($categories),
+           'cover' => $this->faker->imageUrl(400, 300, 'animals', true),
+       ];
+
     }
 }
