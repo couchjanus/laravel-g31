@@ -17,26 +17,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/hello', function () {
-    return view('hello', ['name' => "Laravel"]);
-});
+use App\Http\Controllers\Admin\{BrandController};
 
-// Route::get('home', "App\Http\Controllers\HomeController@index");
-
-// Route::get('name/{name}', "App\Http\Controllers\HomeController@show");
-
-use App\Http\Controllers\HomeController;
-Route::patch('name', [HomeController::class, 'show'])->name('home.test');
-Route::get('home', [HomeController::class, 'index'])->name('home.page');
-
-use App\Http\Controllers\Admin\{DashdoardController, BrandController};
-
-
-Route::get('admin', DashdoardController::class)->middleware('auth')->name('admin');
-
-
-Route::resource('admin/brands', BrandController::class);
-
+use App\Livewire\Admin\Products\{ProductList, CreateProduct};
 
 Route::middleware([
     'auth:sanctum',
@@ -46,4 +29,12 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::name('admin.')->prefix('admin')->group(function(){
+        Route::get('', function() {
+            return view('admin.index');
+        });
+        Route::resource('brands', BrandController::class);
+        Route::get('products', ProductList::class)->name('products.index');
+        Route::get('products/create', CreateProduct::class)->name('products.create');
+    });
 });

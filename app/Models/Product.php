@@ -20,7 +20,7 @@ class Product extends Model
             ]
         ];
     }
-
+    protected $fillable = ['name', 'price', 'description', 'category_id', 'brand_id', 'cover', 'status'];
     protected $table = 'products';
     protected $primaryKey = 'id';
     // public $incrementing = false;

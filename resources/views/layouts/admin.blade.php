@@ -15,6 +15,18 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css">
         <link rel="stylesheet" href='https://fonts.googleapis.com/css?family=Karla:400,700&display=swap'>
 
+
+        <!-- Adds the Core Table Styles -->
+        @rappasoftTableStyles
+
+        <!-- Adds any relevant Third-Party Styles (Used for DateRangeFilter (Flatpickr) and NumberRangeFilter) -->
+        @rappasoftTableThirdPartyStyles
+
+        <!-- Adds the Core Table Scripts -->
+        @rappasoftTableScripts
+
+        <!-- Adds any relevant Third-Party Scripts (e.g. Flatpickr) -->
+        @rappasoftTableThirdPartyScripts
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
@@ -24,21 +36,23 @@
     <body class="bg-gray-100 font-family-karla flex">
         <x-admin.sidebar />
 
-        <div class="w-full flex flex-col h-screen overflow-y-hidden">
-         <div class="w-full overflow-x-hidden border-t flex flex-col">
-           <main class="w-full flex-grow p-6">
+         <div class="min-h-screen bg-gray-100 w-full">
+            @livewire('admin.nav-bar')
 
+            <!-- Page Heading -->
             @if (isset($header))
                 <header class="bg-white shadow">
-                    <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+
                         {{ $header }}
-                    </div>
+
                 </header>
             @endif
-               {{ $slot }}
-           </main>
-         </div>
-       </div>
+
+            <!-- Page Content -->
+            <main>
+                {{ $slot }}
+            </main>
+        </div>
 
 
 
