@@ -27,11 +27,14 @@
 
         <!-- Adds any relevant Third-Party Scripts (e.g. Flatpickr) -->
         @rappasoftTableThirdPartyScripts
-        <!-- Scripts -->
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+        <tallstackui:script />
 
         <!-- Styles -->
         @livewireStyles
+        <!-- Scripts -->
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
+
     </head>
     <body class="bg-gray-100 font-family-karla flex">
         <x-admin.sidebar />
@@ -50,6 +53,7 @@
 
             <!-- Page Content -->
             <main>
+            <x-admin.flesh></x-admin.flesh>
                 {{ $slot }}
             </main>
         </div>

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateBrandRequest;
 
 class BrandController extends Controller
 {
@@ -30,12 +31,29 @@ class BrandController extends Controller
      */
     public function store(Request $request)
     {
-        $brand = new Brand;
-        $brand->name = $request->name;
-        $brand->description = $request->description;
-        $brand->save();
+        $validated = $request->validate([
+            'name' => 'required|unique:brands|max:50|min:3',
+            'description' => 'required'
+        ]);
+
+        // $validated = $request->validate([
+        //     'name' => ['bail', 'required', 'unique:brands', 'max:50', 'min:3'],
+        //     'description' => ['required']
+        // ]);
+
+        // $validated = $request->validateWithBag('brand', [
+        //     'name' => ['bail', 'required', 'unique:brands', 'max:50', 'min:3'],
+        //     'description' => ['required']
+        // ]);
+
+        Brand::create($request->all());
+
+        // $brand = new Brand;
+        // $brand->name = $request->name;
+        // $brand->description = $request->description;
+        // $brand->save();
         //
-        return redirect()->route('brands.index');
+        return redirect()->route('admin.brands.index')->with('success', "Brand created successfully!");
     }
 
     /**
@@ -57,15 +75,11 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Brand $brand)
+    public function update(UpdateBrandRequest $request, Brand $brand)
     {
-        Brand::where('id', $brand->id)
-        ->update([
-            'name' => $request->name,
-            'description' => $request->description
-        ]);
+        $brand->update($request->all());
 
-        return redirect()->route('brands.index');
+        return redirect()->route('admin.brands.index')->with('success', "Brand updated successfully!");
     }
 
     /**
@@ -74,6 +88,6 @@ class BrandController extends Controller
     public function destroy(Brand $brand)
     {
         $brand->delete();
-        return redirect()->route('brands.index');
+        return redirect()->route('admin.brands.index')->with('success', "Brand deleted successfully!");
     }
 }

@@ -2,33 +2,79 @@
 
 namespace App\Livewire\Admin\Products;
 
-// use Livewire\Component;
-use App\Models\Product;
-use Rappasoft\LaravelLivewireTables\DataTableComponent;
-use Rappasoft\LaravelLivewireTables\Views\Column;
 
-class ProductTable extends DataTableComponent
+use App\Models\Product;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Support\Carbon;
+use PowerComponents\LivewirePowerGrid\Column;
+use PowerComponents\LivewirePowerGrid\Footer;
+use PowerComponents\LivewirePowerGrid\Header;
+use PowerComponents\LivewirePowerGrid\PowerGrid;
+use PowerComponents\LivewirePowerGrid\PowerGridComponent;
+use PowerComponents\LivewirePowerGrid\PowerGridFields;
+
+class ProductTable extends PowerGridComponent
 {
 
-    protected $model = Product::class;
+    // public string $tableName = 'products';
 
-    public function configure(): void
+    // protected $model = Product::class;
+
+    public function datasource():Builder
     {
-        $this->setPrimaryKey('id');
+        return Product::query();
     }
+
+    public function setUp(): array
+    {
+        return [
+            Header::make()
+                ->showSearchInput(),
+
+            Footer::make()
+                ->showPerPage()
+                ->showRecordCount(),
+        ];
+    }
+    public function fields(): PowerGridFields
+    {
+        return PowerGrid::fields()
+            ->add('id')
+            ->add('name')
+            ->add('price')
+            ->add('created_at_formatted', function ($product) {
+                return Carbon::parse($product->created_at)
+                    ->timezone('Europe/Kyiv')->format('d/m/Y');
+            });
+    }
+
 
     public function columns(): array
     {
         return [
+
             Column::make('ID', 'id')
+                ->searchable()
                 ->sortable(),
+
             Column::make('Name', 'name')
+                ->bodyAttribute('!text-wrap')
+                ->searchable()
                 ->sortable(),
+
+            Column::make('Price', 'price')
+                ->searchable()
+                ->sortable(),
+
+
+            Column::make('Created At', 'created_at_formatted'),
         ];
     }
 
-    // public function render()
-    // {
-    //     return view('livewire.admin.products.product-table');
-    // }
+    #[\Livewire\Attributes\On('edit')]
+    public function edit(int $dishId): void
+    {
+        $this->js('alert('.$dishId.')');
+    }
+
 }

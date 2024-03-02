@@ -15,7 +15,9 @@
         "laravel/sanctum": "^3.3",
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^3.0",
-        "rappasoft/laravel-livewire-tables": "^3.2"
+        "power-components/livewire-powergrid": "^5.3",
+        "rappasoft/laravel-livewire-tables": "^3.2",
+        "tallstackui/tallstackui": "^1.15"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

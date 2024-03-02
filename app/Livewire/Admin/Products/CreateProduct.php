@@ -8,11 +8,15 @@ use Livewire\Attributes\{Layout, Title};
 use App\Models\{Brand, Category};
 use App\Livewire\Forms\ProductForm;
 
+use Livewire\WithFileUploads;
+
 #[Title('Create Product')]
 #[Layout('layouts.admin')]
 class CreateProduct extends Component
 {
 
+    use WithFileUploads;
+    
     public $categories;
     public $brands;
     public $productStatus;

@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 use App\Http\Controllers\Admin\{BrandController};
 
-use App\Livewire\Admin\Products\{ProductList, CreateProduct};
+use App\Livewire\Admin\Products\{ProductList, CreateProduct, UpdateProduct};
 
 Route::middleware([
     'auth:sanctum',
@@ -36,5 +36,6 @@ Route::middleware([
         Route::resource('brands', BrandController::class);
         Route::get('products', ProductList::class)->name('products.index');
         Route::get('products/create', CreateProduct::class)->name('products.create');
+        Route::get('products/{product}/edit', UpdateProduct::class)->name('products.edit');
     });
 });
