@@ -20,7 +20,7 @@ Route::get('/', function () {
 use App\Http\Controllers\Admin\{BrandController};
 
 use App\Livewire\Admin\Products\{ProductList, CreateProduct, UpdateProduct};
-
+use App\Livewire\Admin\Posts\{PostList, CreatePost, UpdatePost};
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -37,5 +37,9 @@ Route::middleware([
         Route::get('products', ProductList::class)->name('products.index');
         Route::get('products/create', CreateProduct::class)->name('products.create');
         Route::get('products/{product}/edit', UpdateProduct::class)->name('products.edit');
+
+        Route::get('posts', PostList::class)->name('posts.index');
+        Route::get('posts/create', CreatePost::class)->name('posts.create');
+        Route::get('posts/{post}/edit', UpdatePost::class)->name('posts.edit');
     });
 });

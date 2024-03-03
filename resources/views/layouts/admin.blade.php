@@ -17,16 +17,16 @@
 
 
         <!-- Adds the Core Table Styles -->
-        @rappasoftTableStyles
+        {{-- @rappasoftTableStyles --}}
 
         <!-- Adds any relevant Third-Party Styles (Used for DateRangeFilter (Flatpickr) and NumberRangeFilter) -->
-        @rappasoftTableThirdPartyStyles
+        {{-- @rappasoftTableThirdPartyStyles --}}
 
         <!-- Adds the Core Table Scripts -->
-        @rappasoftTableScripts
+        {{-- @rappasoftTableScripts --}}
 
         <!-- Adds any relevant Third-Party Scripts (e.g. Flatpickr) -->
-        @rappasoftTableThirdPartyScripts
+        {{-- @rappasoftTableThirdPartyScripts --}}
 
         <tallstackui:script />
 

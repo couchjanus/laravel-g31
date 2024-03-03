@@ -5,15 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
+
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Brand extends Model
+class Tag extends Model
 {
     use HasFactory;
     use Sluggable;
     use SoftDeletes;
-
-    protected $fillable = ['name', 'description'];
 
     public function sluggable(): array {
         return [
@@ -23,8 +22,8 @@ class Brand extends Model
         ];
     }
 
-    public function products()
+    public function posts()
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Post::class);
     }
 }

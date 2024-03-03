@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Livewire\Admin\Products;
+namespace App\Livewire\Admin\Posts;
 
-
-use App\Models\Product;
+use App\Models\Post;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Carbon;
 use PowerComponents\LivewirePowerGrid\Column;
@@ -14,16 +13,11 @@ use PowerComponents\LivewirePowerGrid\PowerGrid;
 use PowerComponents\LivewirePowerGrid\PowerGridComponent;
 use PowerComponents\LivewirePowerGrid\PowerGridFields;
 
-class ProductTable extends PowerGridComponent
+class PostTable extends PowerGridComponent
 {
-
-    // public string $tableName = 'products';
-
-    // protected $model = Product::class;
-
     public function datasource():Builder
     {
-        return Product::query();
+        return Post::query();
     }
 
     public function setUp(): array
@@ -43,11 +37,9 @@ class ProductTable extends PowerGridComponent
     {
         return PowerGrid::fields()
             ->add('id')
-            ->add('name')
-            ->add('category', fn(Product $product) => $product->category->name)
-            ->add('price')
-            ->add('created_at_formatted', function ($product) {
-                return Carbon::parse($product->created_at)
+            ->add('title')
+            ->add('created_at_formatted', function ($post) {
+                return Carbon::parse($post->created_at)
                     ->timezone('Europe/Kyiv')->format('d/m/Y');
             });
     }
@@ -61,19 +53,11 @@ class ProductTable extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Name', 'name')
+            Column::make('Title', 'title')
                 ->bodyAttribute('!text-wrap')
                 ->searchable()
                 ->sortable(),
 
-            Column::make('Category', 'category', 'category_id')
-
-                ->searchable()
-                ->sortable(),
-
-            Column::make('Price', 'price')
-                ->searchable()
-                ->sortable(),
 
 
             Column::make('Created At', 'created_at_formatted'),
@@ -82,13 +66,13 @@ class ProductTable extends PowerGridComponent
     }
 
 
-    public function actions(Product $row): array
+    public function actions(Post $row): array
     {
         return [
             Button::add('edit')
                 ->slot('Edit')
                 ->class('inline-flex focus:outline-none text-white bg-purple-700 hover:bg-purple-800 focus:ring-4 focus:ring-purple-300 font-medium rounded-lg text-sm px-5 py-2.5 mb-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900')
-                ->route('admin.products.edit', ['product' => $row->id]),
+                ->route('admin.posts.edit', ['post' => $row->id]),
             Button::add('del')
                 ->slot('Delete')
                 ->class('inline-flex focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900')
@@ -110,21 +94,13 @@ class ProductTable extends PowerGridComponent
         ];
     }
 
-    // #[\Livewire\Attributes\On('delete.{tableName}')]
-    // public function delete(): void
-    // {
-    //     if (count($this->checkboxValues) == 0) {
-    //         return;
-    //     }
-    //     Product::destroy($this->checkboxValues);
-    //     // $this->reset();
-    // }
+
 
     #[\Livewire\Attributes\On('del')]
     public function del(int $rowId): void
     {
-        // $this->js('window.alert('.$rowId.')');
-        Product::destroy($rowId);
+
+        Post::destroy($rowId);
     }
 
     #[\Livewire\Attributes\On('bulkDelete.{tableName}')]
@@ -133,19 +109,18 @@ class ProductTable extends PowerGridComponent
         if (count($this->checkboxValues) == 0) {
             return;
         }
-        Product::destroy($this->checkboxValues);
-        // $this->reset();
+        Post::destroy($this->checkboxValues);
+
     }
 
     #[\Livewire\Attributes\On('bulkRestore.{tableName}')]
     public function bulkRestore(): void
     {
         if (count($this->checkboxValues) !== 0) {
-            Product::onlyTrashed()
+            Post::onlyTrashed()
             ->whereIn('id', $this->checkboxValues)->restore();
         }
-        // $this->reset();
+
         return;
     }
-
 }

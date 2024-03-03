@@ -7,11 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Enums\ProductStatus;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Product extends Model
 {
     use HasFactory;
     use Sluggable;
+    use SoftDeletes;
 
     public function sluggable(): array {
         return [
@@ -39,6 +41,16 @@ class Product extends Model
     public function scopeActive($query)
     {
         return $query->where('status', ProductStatus::ACTIVE());
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
     }
 
 }
