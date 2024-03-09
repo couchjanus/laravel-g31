@@ -9,6 +9,7 @@ use App\Enums\PostStatus;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class Post extends Model
 {
@@ -71,6 +72,29 @@ class Post extends Model
     {
         $mins = round(str_word_count($this->content) / 250);
         return ($mins < 1) ? 1 : $mins;
+    }
+
+    public function scopeWithTag($query, string $tag)
+    {
+        $query->whereHas('tags', function ($query) use ($tag) {
+            $query->where('slug', $tag);
+        });
+    }
+
+    public function scopePopular($query)
+    {
+        $query->withCount('likes')
+            ->orderBy("likes_count", 'desc');
+    }
+
+    public function scopeSearch($query, string $search = '')
+    {
+        $query->where('title', 'like', "%{$search}%");
+    }
+
+    public function getExcerpt()
+    {
+        return Str::limit(strip_tags($this->content), 150);
     }
 
 }

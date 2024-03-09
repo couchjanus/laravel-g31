@@ -16,11 +16,11 @@ class PostController extends Controller
                 $query->published();
             })->take(10)->get();
         });
-        return view('main.posts.index');
+        return view('main.posts.index', ['tags' => $tags]);
     }
 
     public function show(Post $post)
     {
-        return view('main.posts.show', ['post'=>$post]);
+        return view('main.posts.show', ['post' => $post]);
     }
 }

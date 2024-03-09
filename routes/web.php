@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-use App\Livewire\Main\{Catalog, HomePage};
+use App\Livewire\Main\{Catalog, HomePage, ShoppingCart};
 use App\Http\Controllers\PostController;
 
 Route::get('', HomePage::class)->name('home');
@@ -25,6 +25,9 @@ Route::get('shop', Catalog::class)->name('shop');
 
 Route::get('blog',[PostController::class, 'index'])->name('posts.index');
 Route::get('blog/{post:slug}',[PostController::class, 'show'])->name('posts.show');
+Route::get('shopping-cart', ShoppingCart::class)->name('shopping.cart');
+
+
 
 use App\Http\Controllers\Admin\{BrandController};
 
@@ -38,6 +41,9 @@ Route::middleware([
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
+    Route::get('/checkout', [App\Http\Controllers\OrderController::class, 'checkout'])->name('checkout.index');
+    Route::post('/checkout/order', [App\Http\Controllers\OrderController::class, 'placeOrder'])->name('checkout.place.order');
+
     Route::name('admin.')->prefix('admin')->group(function(){
         Route::get('', function() {
             return view('admin.index');

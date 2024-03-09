@@ -2,13 +2,14 @@
 
 namespace App\Livewire\Main;
 
+use App\Models\Post;
+use Livewire\Attributes\Computed;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
-
-use Livewire\Attributes\{Computed, Layout, Title, Rule};
-use App\Models\{Post};
 use Livewire\WithPagination;
+use Livewire\Attributes\{Layout, Title};
 
-#[Title('Post comments')]
+#[Title('Post page')]
 #[Layout('layouts.main')]
 class PostComments extends Component
 {
@@ -16,16 +17,22 @@ class PostComments extends Component
 
     public Post $post;
 
-    #[Rule('required|min:3|max:2048')]
+    #[Rule('required|min:3|max:200')]
     public string $comment;
 
     public function postComment()
     {
+        if (auth()->guest()) {
+            return;
+        }
+
         $this->validateOnly('comment');
+
         $this->post->comments()->create([
             'comment' => $this->comment,
-            'user_id' => auth()->id(),
+            'user_id' => auth()->id()
         ]);
+
         $this->reset('comment');
     }
 
