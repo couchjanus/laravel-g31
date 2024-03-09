@@ -13,9 +13,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+use App\Livewire\Main\{Catalog, HomePage};
+use App\Http\Controllers\PostController;
+
+Route::get('', HomePage::class)->name('home');
+Route::get('shop', Catalog::class)->name('shop');
+
+Route::get('blog',[PostController::class, 'index'])->name('posts.index');
+Route::get('blog/{post:slug}',[PostController::class, 'show'])->name('posts.show');
 
 use App\Http\Controllers\Admin\{BrandController};
 

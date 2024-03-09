@@ -6,7 +6,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use App\Enums\PostStatus;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Post extends Model
 {
@@ -49,5 +51,26 @@ class Post extends Model
         return $this->belongsToMany(Tag::class);
     }
 
+    public function scopeStatus($query)
+    {
+        $query->where('status', PostStatus::ACTIVE());
+    }
+
+    public function scopePublished($query)
+    {
+        $query->where('updated_at', '<=', Carbon::now());
+    }
+
+    public function getThumbnailUrl()
+    {
+        $isUrl = str_contains($this->cover, 'http');
+        return $isUrl ? $this->cover : asset(Storage::url($this->cover));
+    }
+
+    public function getReadingTime()
+    {
+        $mins = round(str_word_count($this->content) / 250);
+        return ($mins < 1) ? 1 : $mins;
+    }
 
 }
