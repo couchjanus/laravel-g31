@@ -33,6 +33,9 @@ use App\Http\Controllers\Admin\{BrandController};
 
 use App\Livewire\Admin\Products\{ProductList, CreateProduct, UpdateProduct};
 use App\Livewire\Admin\Posts\{PostList, CreatePost, UpdatePost};
+use App\Livewire\Admin\Users\{UsersList, CreateUser, EditUser};
+use App\Livewire\Admin\Roles\{RoleList, CreateRole, EditRole};
+
 Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
@@ -56,5 +59,13 @@ Route::middleware([
         Route::get('posts', PostList::class)->name('posts.index');
         Route::get('posts/create', CreatePost::class)->name('posts.create');
         Route::get('posts/{post}/edit', UpdatePost::class)->name('posts.edit');
+
+        Route::get('users', UsersList::class)->name('users.index');
+        Route::get('users/create', CreateUser::class)->name('users.create');
+        Route::get('users/{user}/edit', EditUser::class)->name('users.edit');
+
+        Route::get('roles', RoleList::class)->name('roles.index');
+        Route::get('roles/create', CreateRole::class)->name('roles.create');
+        Route::get('roles/{role}/edit', EditRole::class)->name('roles.edit');
     });
 });

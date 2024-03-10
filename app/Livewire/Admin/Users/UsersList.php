@@ -11,10 +11,10 @@ use App\Traits\RoleOrPermission;
 class UsersList extends Component
 {
     use RoleOrPermission;
-    
+
     public function __construct()
     {
-      $this->handlePermission('admin|manager');
+    //   $this->handlePermission('admin|manager');
     }
 
     #[Layout('layouts.admin')]
